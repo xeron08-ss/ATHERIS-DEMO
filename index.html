@@ -2066,7 +2066,7 @@ html, body {
 </div>
 
 <!-- LOADING SCREEN -->
-<div id="atherisLoadingScreen" style="
+<div id="atherisLoadingScreen" onclick="var v=document.getElementById('introVideo');if(v){v.play();}" style="
   position:fixed;inset:0;z-index:99999;
   background:#050c0b;
   display:flex;flex-direction:column;
@@ -2100,7 +2100,7 @@ html, body {
         opacity:0;
         transition:opacity 0.5s ease;
     ">
-      <source src="0520.mp4" type="video/mp4">
+      <source src="animation.mp4" type="video/mp4">
     </video>
     <div style="font-size:0.75rem;color:#4a9e96;margin-top:4px;letter-spacing:2px;text-transform:uppercase;">Media Authentication Platform</div>
   </div>
@@ -4712,10 +4712,31 @@ function runLoadingScreen() {
     animFrameId = requestAnimationFrame(tick);
   }
 
-  // Sync loading bar to video duration (5 seconds)
+  // Force play video on all browsers including Chrome desktop
   const vid = document.getElementById('introVideo');
   if (vid) {
+    vid.muted = true;
+    vid.volume = 0;
     vid.addEventListener('ended', dismissLoadingScreen);
+
+    // Try to play immediately
+    const playAttempt = vid.play();
+    if (playAttempt !== undefined) {
+      playAttempt.then(() => {
+        // Playing successfully
+        vid.style.opacity = '1';
+      }).catch(() => {
+        // Autoplay blocked — force it after tiny delay
+        setTimeout(() => {
+          vid.play().then(() => {
+            vid.style.opacity = '1';
+          }).catch(() => {
+            // If still blocked, just dismiss after 5 seconds
+            setTimeout(dismissLoadingScreen, 5000);
+          });
+        }, 100);
+      });
+    }
   }
   setTimeout(runStage, 300);
 }
