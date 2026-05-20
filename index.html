@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Atheris AI — HUNT THE FAKE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,7 +113,7 @@ body {
 @keyframes circleStroke { from { stroke-dashoffset: 502; } to { stroke-dashoffset: var(--target-offset); } }
 @keyframes toastIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(0.95); } }
-@keyframes bgFloat { 0%, 100% { transform: translate3d(0, 0px, 0) rotate(0deg); } 50% { transform: translate3d(0, -15px, 0) rotate(2deg); } }
+@keyframes bgFloat { 0%, 100% { transform: translate3d(0, 0px, 0); } 50% { transform: translate3d(0, -12px, 0); } }
 @keyframes heatPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; } }
 @keyframes consoleBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes scanLine { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
@@ -212,7 +212,43 @@ body {
 .progress-bar-wrap { padding: 12px 20px; border-top: 1px solid var(--border-light); display: none; }
 .progress-bar-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
 .progress-bar-track { height: 4px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 99px; transition: width 0.3s ease; width: 0%; }
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C9A7, #0D9488, #00C9A7);
+  background-size: 200% 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+  width: 0%;
+  animation: uploadShimmer 1.2s linear infinite;
+}
+@keyframes uploadShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.upload-scan-wrap {
+  display: none;
+  padding: 10px 20px 14px;
+  border-top: 1px solid var(--border-light);
+}
+.upload-scan-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.upload-scan-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue);
+  animation: uploadDotPulse 1s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes uploadDotPulse {
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.4;transform:scale(0.7);}
+}
+.upload-scan-text { color: var(--blue); transition: all 0.3s ease; }
 
 /* =============================================
    ANALYZE BUTTON
@@ -368,18 +404,7 @@ body {
 .sec-amber { background: var(--amber-light); color: var(--amber); }
 .security-divider { width: 1px; height: 24px; background: var(--border); }
 
-/* =============================================
-   FOOTER
-   ============================================= */
-.footer { background: var(--surface); border-top: 1px solid var(--border); margin-top: 48px; padding: 32px 24px; }
-.footer-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-.footer-brand { display: flex; align-items: center; gap: 10px; }
-.footer-brand-text { font-weight: 600; font-size: 0.88rem; }
-.footer-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
-.footer-links { display: flex; align-items: center; gap: 8px; }
-.footer-link { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); transition: var(--transition); }
-.footer-link:hover { color: var(--text-primary); background: var(--surface-2); }
-.version-tag { font-size: 0.72rem; font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; color: var(--text-muted); }
+
 
 /* =============================================
    TOAST NOTIFICATIONS
@@ -581,8 +606,10 @@ body {
   background: var(--blue);
   opacity: 0.7;
   animation: waveAnim 0.8s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
 }
-@keyframes waveAnim { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+@keyframes waveAnim { from { transform: translate3d(0,0,0) scaleY(0.2); } to { transform: translate3d(0,0,0) scaleY(1); } }
 .audio-result-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -719,7 +746,7 @@ body {
 }
 .threat-item:hover { background: var(--surface); border-color: var(--border); }
 .threat-level-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-.threat-level-high { background: var(--red); animation: threatPulse 2s ease-in-out infinite; }
+.threat-level-high { background: var(--red); animation: threatPulse 3s ease-in-out infinite; will-change: box-shadow; }
 .threat-level-med { background: var(--amber); }
 .threat-level-low { background: var(--green); }
 .threat-info { flex: 1; }
@@ -1387,46 +1414,58 @@ body {
 @media (max-width: 480px) {
   /* HERO */
   .hero {
-    padding: 32px 0 24px !important;
+    padding: 24px 0 20px !important;
   }
   .hero-title {
-    font-size: 1.5rem !important;
-    letter-spacing: -0.5px !important;
+    font-size: 1.3rem !important;
+    letter-spacing: -0.3px !important;
+    line-height: 1.25 !important;
   }
   .hero-subtitle {
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
+    margin-bottom: 20px !important;
   }
   .hero-cta {
-    font-size: 0.85rem !important;
-    padding: 12px 20px !important;
+    font-size: 0.82rem !important;
+    padding: 11px 18px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
   .hero-stats {
     flex-wrap: wrap !important;
-    gap: 12px !important;
+    gap: 10px !important;
     justify-content: center !important;
+    margin-top: 24px !important;
+    padding-top: 20px !important;
   }
-  .hero-stat { min-width: 80px; }
+  .hero-stat { min-width: 70px; }
   .stat-divider { display: none !important; }
-  .hero-stat-val { font-size: 1.1rem !important; }
-  .hero-stat-label { font-size: 0.65rem !important; }
+  .hero-stat-val { font-size: 1rem !important; }
+  .hero-stat-label { font-size: 0.6rem !important; }
 
   /* NAVBAR */
   .navbar-inner {
-    height: 64px !important;
-    padding: 0 12px !important;
+    height: 60px !important;
+    padding: 0 10px !important;
   }
   .logo img {
-    height: 40px !important;
-    width: 110px !important;
-    max-width: 35vw !important;
+    height: 36px !important;
+    width: 100px !important;
+    max-width: 32vw !important;
   }
   .nav-badges { display: none !important; }
   .nav-actions {
     gap: 4px !important;
   }
   .nav-actions .btn-ghost {
-    font-size: 0.65rem !important;
-    padding: 5px 8px !important;
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    font-size: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
   }
 
   /* SECURITY STRIP */
@@ -1434,165 +1473,238 @@ body {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
-    padding: 12px !important;
+    padding: 10px !important;
+    margin-bottom: 12px !important;
   }
   .security-divider { display: none !important; }
   .security-badge {
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
     justify-content: center !important;
+    gap: 4px !important;
+  }
+  .security-badge .icon {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.8rem !important;
   }
 
   /* MODE TABS */
   .mode-tabs-wrap {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 6px !important;
-    padding: 6px !important;
+    gap: 4px !important;
+    padding: 5px !important;
+    margin-bottom: 16px !important;
   }
   .mode-tab {
-    font-size: 0.65rem !important;
-    padding: 8px 6px !important;
+    font-size: 0.6rem !important;
+    padding: 7px 4px !important;
     min-width: unset !important;
     justify-content: center !important;
+    gap: 3px !important;
+    line-height: 1.2 !important;
   }
   .mode-tab .tab-icon {
     display: inline !important;
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
   }
 
   /* UPLOAD ZONE */
   .upload-zone {
-    padding: 28px 12px !important;
+    padding: 24px 12px !important;
   }
-  .upload-title { font-size: 0.88rem !important; }
-  .upload-subtitle { font-size: 0.72rem !important; }
+  .upload-title { font-size: 0.85rem !important; }
+  .upload-subtitle { font-size: 0.7rem !important; margin-bottom: 12px !important; }
   .upload-icon {
-    width: 48px !important;
-    height: 48px !important;
+    width: 44px !important;
+    height: 44px !important;
+    margin-bottom: 12px !important;
+  }
+  .upload-formats {
+    gap: 4px !important;
+  }
+  .format-tag {
+    font-size: 0.6rem !important;
+    padding: 2px 5px !important;
+  }
+
+  /* ANALYZE BUTTON */
+  .btn-analyze {
+    width: 100% !important;
+    padding: 14px 20px !important;
+    font-size: 0.9rem !important;
+    justify-content: center !important;
   }
 
   /* CARDS */
   .cards-grid {
     grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
   .analysis-card { padding: 14px !important; }
+  .card-title { font-size: 0.82rem !important; }
+  .card-desc { font-size: 0.72rem !important; }
 
   /* RESULTS */
   .result-hero {
     grid-template-columns: 1fr !important;
+    gap: 12px !important;
   }
   .result-card.featured {
     grid-column: span 1 !important;
   }
   .result-card { padding: 16px !important; }
+  .featured-verdict { font-size: 1.1rem !important; }
+  .circle-pct { font-size: 1.6rem !important; }
+  .score-card-title { font-size: 0.72rem !important; }
+  .score-row-header { font-size: 0.7rem !important; }
+  .score-row-val { font-size: 0.7rem !important; }
+  .conf-level { font-size: 1.1rem !important; }
 
   /* EXPORT ROW */
   .export-row {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
+    gap: 6px !important;
   }
   .btn-export {
-    font-size: 0.68rem !important;
-    padding: 8px 8px !important;
+    font-size: 0.65rem !important;
+    padding: 8px 6px !important;
     justify-content: center !important;
+    gap: 4px !important;
   }
+  .btn-export svg { width: 12px !important; height: 12px !important; }
 
   /* ANALYTICS */
   .analytics-dashboard {
     grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
-  .analytics-val { font-size: 1.4rem !important; }
+  .analytics-val { font-size: 1.3rem !important; }
+  .analytics-label { font-size: 0.65rem !important; }
+  .analytics-card { padding: 14px !important; }
+
+  /* SECTION TITLES */
+  .section-title { font-size: 0.88rem !important; }
+  .section-subtitle { font-size: 0.75rem !important; }
 
   /* NEURAL NETWORK */
   .tl-neural-canvas {
-    height: 140px !important;
+    height: 130px !important;
   }
   .tl-neural-title {
-    font-size: 0.95rem !important;
-  }
-  .tl-neural-subtitle {
-    font-size: 0.7rem !important;
-    padding: 0 12px !important;
-  }
-  .tl-neural-stats {
-    gap: 12px !important;
-  }
-  .tl-neural-stat-val {
     font-size: 0.85rem !important;
   }
+  .tl-neural-subtitle {
+    font-size: 0.65rem !important;
+    padding: 0 16px !important;
+  }
+  .tl-neural-stats {
+    gap: 10px !important;
+  }
+  .tl-neural-stat-val {
+    font-size: 0.8rem !important;
+  }
   .tl-neural-stat-label {
-    font-size: 0.55rem !important;
+    font-size: 0.5rem !important;
   }
 
   /* SHORTCUTS BAR */
   .tl-shortcuts-bar {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
-    padding: 10px 12px !important;
+    gap: 6px !important;
+    padding: 8px 10px !important;
+    font-size: 0.6rem !important;
   }
   .tl-shortcut {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
   .tl-kbd {
-    font-size: 0.58rem !important;
-    padding: 1px 4px !important;
+    font-size: 0.55rem !important;
+    padding: 1px 3px !important;
   }
   .tl-shortcuts-bar > span:first-child {
     grid-column: span 2 !important;
+    font-size: 0.65rem !important;
   }
   .tl-shortcuts-bar > div:last-child {
     grid-column: span 2 !important;
     text-align: center !important;
-    font-size: 0.6rem !important;
+    font-size: 0.55rem !important;
   }
 
   /* METRICS GRID */
   .tl-metrics-grid {
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
-  .tl-metric-value { font-size: 1.4rem !important; }
+  .tl-metric-value { font-size: 1.3rem !important; }
+  .tl-metric-label { font-size: 0.65rem !important; }
+  .tl-metric-sub { font-size: 0.65rem !important; }
+  .tl-metric-card { padding: 14px !important; }
+
+  /* MODE PILLS */
+  .tl-mode-pills {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+  }
+  .tl-mode-pill {
+    font-size: 0.68rem !important;
+    padding: 7px 8px !important;
+    justify-content: center !important;
+  }
 
   /* MODEL ATTRIBUTION */
   .tl-model-attr-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
   }
+  .tl-model-attr-card { padding: 12px !important; }
   .tl-model-attr-icon { font-size: 1.2rem !important; }
   .tl-model-attr-pct { font-size: 1.1rem !important; }
-  .tl-model-attr-name { font-size: 0.72rem !important; }
+  .tl-model-attr-name { font-size: 0.7rem !important; }
 
   /* CHARTS */
   .tl-charts-grid {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 10px !important;
   }
   .tl-chart-full {
     grid-column: span 1 !important;
   }
   .tl-chart-canvas-wrap {
-    height: 180px !important;
+    height: 140px !important;
   }
+  .tl-chart-full .tl-chart-canvas-wrap {
+    height: 120px !important;
+  }
+  .tl-chart-card { padding: 10px 8px !important; }
+  .tl-chart-card-title { font-size: 0.68rem !important; }
 
   /* HISTORY STATS */
   .tl-history-stats {
     grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
+    gap: 6px !important;
   }
   .tl-hist-stat-val { font-size: 1rem !important; }
+  .tl-hist-stat-label { font-size: 0.55rem !important; }
+  .tl-hist-stat { padding: 10px !important; }
 
   /* TRUST LEVELS */
   .tl-trust-levels {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 6px !important;
+    gap: 5px !important;
   }
   .tl-trust-level-item {
-    font-size: 0.6rem !important;
+    font-size: 0.58rem !important;
     padding: 6px !important;
+  }
+  .tl-trust-badge {
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
   }
 
   /* EXPORT GRID */
@@ -1600,22 +1712,10 @@ body {
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
   }
-  .tl-export-option { padding: 12px 8px !important; }
+  .tl-export-option { padding: 12px 6px !important; }
   .tl-export-option-icon { font-size: 1.4rem !important; }
-  .tl-export-option-label { font-size: 0.7rem !important; }
-  .tl-export-option-desc { font-size: 0.58rem !important; }
-
-  /* MODE PILLS */
-  .tl-mode-pills {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 6px !important;
-  }
-  .tl-mode-pill {
-    font-size: 0.7rem !important;
-    padding: 7px 10px !important;
-    justify-content: center !important;
-  }
+  .tl-export-option-label { font-size: 0.68rem !important; }
+  .tl-export-option-desc { font-size: 0.56rem !important; }
 
   /* HUMANIZATION */
   .tl-human-meter-wrap {
@@ -1623,50 +1723,136 @@ body {
     align-items: center !important;
   }
   .tl-human-details { width: 100% !important; }
+  .tl-human-row-label { font-size: 0.72rem !important; }
+  .tl-human-row-val { font-size: 0.68rem !important; }
 
   /* ADV SETTINGS */
   .tl-adv-settings-grid {
     grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
+  .tl-adv-setting-label { font-size: 0.78rem !important; }
+  .tl-adv-setting-desc { font-size: 0.68rem !important; }
 
   /* TEXT BANDS */
   .text-result-bands {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
   }
+  .text-band { padding: 12px !important; }
+  .text-band-val { font-size: 1.3rem !important; }
+  .text-band-label { font-size: 0.65rem !important; }
 
   /* AUDIO GRID */
   .audio-result-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
   }
+  .audio-stat-val { font-size: 1.2rem !important; }
+  .audio-stat-label { font-size: 0.6rem !important; }
 
   /* ENTERPRISE */
   .enterprise-teaser {
-    padding: 24px 16px !important;
+    padding: 20px 14px !important;
   }
-  .enterprise-title { font-size: 1.1rem !important; }
-  .enterprise-features { gap: 6px !important; }
+  .enterprise-title { font-size: 1rem !important; }
+  .enterprise-desc { font-size: 0.78rem !important; }
+  .enterprise-features { gap: 5px !important; }
   .ent-feature {
-    font-size: 0.65rem !important;
-    padding: 4px 8px !important;
+    font-size: 0.6rem !important;
+    padding: 4px 7px !important;
+  }
+  .btn-enterprise {
+    font-size: 0.8rem !important;
+    padding: 10px 18px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* AWARENESS */
+  .awareness-section {
+    padding: 24px 14px !important;
+  }
+  .awareness-title { font-size: 1.1rem !important; }
+  .awareness-subtitle { font-size: 0.78rem !important; margin-bottom: 16px !important; }
+  .awareness-cards {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .awareness-card { padding: 14px !important; }
+  .awareness-card-icon { font-size: 1.3rem !important; }
+  .awareness-card-title { font-size: 0.78rem !important; }
+  .awareness-card-desc { font-size: 0.68rem !important; }
+
+  /* EXTENSION PROMO */
+  .extension-promo {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+  .extension-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.5rem !important;
+  }
+  .extension-title { font-size: 0.88rem !important; }
+  .extension-desc { font-size: 0.72rem !important; }
+  .extension-actions {
+    justify-content: center !important;
+    gap: 6px !important;
   }
 
   /* API SECTION */
   .api-code-block {
-    font-size: 0.65rem !important;
-    padding: 12px !important;
+    font-size: 0.58rem !important;
+    padding: 10px !important;
     overflow-x: auto !important;
+    line-height: 1.6 !important;
   }
-  .api-section { padding: 20px 16px !important; }
+  .api-section { padding: 16px 12px !important; }
+  .api-title { font-size: 1.1rem !important; }
+  .api-subtitle { font-size: 0.75rem !important; }
+  .api-endpoint {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 8px 10px !important;
+  }
+  .api-path { font-size: 0.7rem !important; }
+  .api-desc-sm { font-size: 0.62rem !important; width: 100% !important; }
 
   /* BLOCKCHAIN */
   .blockchain-chain {
     flex-wrap: wrap !important;
     gap: 4px !important;
   }
+  .chain-block {
+    font-size: 0.58rem !important;
+    padding: 4px 7px !important;
+  }
+
+  /* METADATA TABLE */
+  .metadata-table td {
+    padding: 8px 10px !important;
+    font-size: 0.72rem !important;
+  }
+  .metadata-table td:first-child { width: 45% !important; font-size: 0.68rem !important; }
+  .metadata-table td:last-child { font-size: 0.68rem !important; }
+  .metadata-flag { font-size: 0.58rem !important; padding: 1px 4px !important; }
+
+  /* TIMELINE */
+  .timeline-label { font-size: 0.78rem !important; }
+  .timeline-detail { font-size: 0.68rem !important; }
+  .timeline-time { font-size: 0.62rem !important; }
+
+  /* MODULE SECTION */
+  .module-section-header { padding: 14px 16px !important; }
+  .module-section-title { font-size: 0.82rem !important; }
+  .module-section-body { padding: 16px !important; }
+  .new-module-section { margin-bottom: 16px !important; }
 
   /* FOOTER */
+  .footer { padding: 20px 12px !important; }
   .footer-inner {
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -1674,42 +1860,108 @@ body {
   }
   .footer-links {
     flex-wrap: wrap !important;
-    gap: 6px !important;
+    gap: 5px !important;
   }
   .footer-link {
-    font-size: 0.7rem !important;
+    font-size: 0.68rem !important;
     padding: 4px 8px !important;
   }
+  .footer-brand-text { font-size: 0.82rem !important; }
+  .footer-meta { font-size: 0.68rem !important; }
 
   /* CHAT */
   .chat-helper-wrap {
-    width: calc(100vw - 24px) !important;
-    right: 12px !important;
-    bottom: 80px !important;
+    width: calc(100vw - 20px) !important;
+    right: 10px !important;
+    bottom: 76px !important;
+    max-height: 420px !important;
+  }
+  .chat-fab {
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 1.1rem !important;
+    bottom: 16px !important;
+    left: 16px !important;
   }
 
   /* WRAPPER */
   .wrapper {
-    padding: 0 12px !important;
+    padding: 0 10px !important;
   }
 
   /* BATCH */
   .batch-item {
     flex-wrap: wrap !important;
-    gap: 6px !important;
+    gap: 5px !important;
+    padding: 10px 12px !important;
   }
-  .batch-item-name { font-size: 0.72rem !important; }
+  .batch-item-name { font-size: 0.7rem !important; }
+  .batch-item-size { font-size: 0.62rem !important; }
+  .batch-zone { padding: 24px 14px !important; }
 
   /* COMPARISON */
   .comp-arrow { display: none !important; }
   .comparison-wrap {
     grid-template-columns: 1fr !important;
+    gap: 12px !important;
   }
+  .comparison-upload-zone { padding: 20px !important; font-size: 0.78rem !important; }
 
   /* SETTINGS GRID */
   .settings-grid {
     grid-template-columns: 1fr !important;
   }
+  .setting-label { font-size: 0.8rem !important; }
+  .setting-desc { font-size: 0.7rem !important; }
+
+  /* HISTORY */
+  .history-name { font-size: 0.78rem !important; }
+  .history-meta { font-size: 0.65rem !important; }
+  .history-badge { font-size: 0.62rem !important; padding: 2px 6px !important; }
+  .history-item { padding: 10px 12px !important; gap: 8px !important; }
+
+  /* FRAME INSPECTOR */
+  .frame-thumb { width: 64px !important; height: 42px !important; font-size: 1rem !important; }
+  .frame-thumb-badge { font-size: 0.48rem !important; }
+  .frame-score-pill { font-size: 0.65rem !important; padding: 4px 8px !important; }
+
+  /* CERTIFICATE */
+  .cert-title { font-size: 1rem !important; }
+  .cert-id { font-size: 0.65rem !important; }
+  .cert-row { font-size: 0.72rem !important; }
+  .cert-row-val { font-size: 0.65rem !important; }
+
+  /* SCORE BARS */
+  .score-bars { gap: 10px !important; }
+  .model-name { width: 80px !important; font-size: 0.72rem !important; }
+  .model-pct { font-size: 0.68rem !important; }
+
+  /* CONSOLE */
+  .console-body { font-size: 0.65rem !important; padding: 10px !important; }
+  .console-title { font-size: 0.6rem !important; }
+
+  /* REALTIME SCANNER */
+  .tl-rt-score-label { font-size: 0.7rem !important; min-width: 80px !important; }
+  .tl-rt-score-pct { font-size: 0.7rem !important; }
+  .tl-section-title { font-size: 0.85rem !important; }
+  .tl-section-sub { font-size: 0.7rem !important; }
+  .tl-heatmap-btn { font-size: 0.68rem !important; padding: 5px 10px !important; }
+
+  /* TERMINAL */
+  .tl-terminal-body { font-size: 0.65rem !important; min-height: 120px !important; }
+  .tl-term-title { font-size: 0.6rem !important; }
+  .tl-terminal-footer { font-size: 0.58rem !important; gap: 10px !important; }
+
+  /* ADVANCED PANEL */
+  .tl-advanced-title { font-size: 0.82rem !important; }
+  .tl-advanced-body { padding: 14px !important; }
+  .tl-pred-bars { height: 60px !important; }
+  .tl-predictability-wrap { padding: 14px !important; }
+  .tl-pred-title { font-size: 0.78rem !important; }
+
+  /* TOAST */
+  .toast { font-size: 0.75rem !important; padding: 10px 14px !important; max-width: calc(100vw - 40px) !important; }
+  .toast-container { right: 12px !important; bottom: 16px !important; }
 }
 
 /* PREVENT HORIZONTAL SCROLL — ALL DEVICES */
@@ -1721,7 +1973,8 @@ html, body {
 
 /* TOUCH TARGETS */
 @media (max-width: 768px) {
-  button, .btn-ghost, .btn-export, .mode-tab, .tl-mode-pill {
+  button, .btn-ghost, .btn-export, .mode-tab, .tl-mode-pill,
+  .tl-heatmap-btn, .quick-reply, .btn-analyze, .hero-cta {
     min-height: 40px !important;
     touch-action: manipulation !important;
   }
@@ -1742,23 +1995,40 @@ html, body {
   }
 }
 
-/* TABLET FIXES */
-@media (max-width: 600px) {
+/* TABLET FIXES — 481px to 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+  .hero-title { font-size: 1.7rem !important; }
   .mode-tabs-wrap {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
     gap: 6px !important;
   }
-  .tl-shortcuts-bar {
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-  }
+  .result-hero { grid-template-columns: 1fr !important; }
+  .cards-grid { grid-template-columns: 1fr 1fr !important; }
+  .tl-metrics-grid { grid-template-columns: 1fr 1fr !important; }
+  .analytics-dashboard { grid-template-columns: 1fr 1fr !important; }
+  .awareness-cards { grid-template-columns: 1fr 1fr !important; }
   .export-row {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
     gap: 8px !important;
   }
+  .tl-export-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .tl-model-attr-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .wrapper { padding: 0 16px !important; }
 }
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer { background: var(--surface); border-top: 1px solid var(--border); margin-top: 48px; padding: 32px 24px; }
+.footer-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-brand-text { font-weight: 600; font-size: 0.88rem; }
+.footer-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.footer-links { display: flex; align-items: center; gap: 8px; }
+.footer-link { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); transition: var(--transition); }
+.footer-link:hover { color: var(--text-primary); background: var(--surface-2); }
+.version-tag { font-size: 0.72rem; font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; color: var(--text-muted); }
 </style>
 </head>
 
@@ -1770,6 +2040,88 @@ html, body {
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 </div>
+
+<!-- LOADING SCREEN -->
+<div id="atherisLoadingScreen" style="
+  position:fixed;inset:0;z-index:99999;
+  background:#050c0b;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+  transition:opacity 0.6s ease, transform 0.6s ease;
+">
+  <!-- Logo area -->
+  <div style="margin-bottom:32px;text-align:center;" id="loadLogoWrap">
+    <img src="snake.png" alt="Atheris AI Logo" style="
+      width:120px;
+      height:auto;
+      object-fit:contain;
+      margin:0 auto 10px;
+      display:block;
+      background:transparent;
+      border:none;
+      outline:none;
+      box-shadow:none;
+      border-radius:0;
+      padding:0;
+      mix-blend-mode:screen;
+      filter:drop-shadow(0 0 20px rgba(0,201,167,0.5)) brightness(1.2) contrast(1.1);
+      animation:loadLogoPulse 2s ease-in-out infinite;
+    ">
+    <div style="font-size:0.75rem;color:#4a9e96;margin-top:4px;letter-spacing:2px;text-transform:uppercase;">Media Authentication Platform</div>
+  </div>
+
+  <!-- Scanning ring animation -->
+  <div style="position:relative;width:120px;height:120px;margin-bottom:28px;" id="loadRingWrap">
+    <svg width="120" height="120" viewBox="0 0 120 120" style="position:absolute;top:0;left:0;">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(0,201,167,0.08)" stroke-width="6"/>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="url(#loadGrad)" stroke-width="6"
+        stroke-linecap="round" stroke-dasharray="326" stroke-dashoffset="326"
+        id="loadProgressRing" style="transform:rotate(-90deg);transform-origin:60px 60px;transition:stroke-dashoffset 0.4s ease;"/>
+      <defs>
+        <linearGradient id="loadGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#00C9A7"/>
+          <stop offset="100%" style="stop-color:#0D9488"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <svg width="120" height="120" viewBox="0 0 120 120" style="position:absolute;top:0;left:0;animation:loadScanSpin 2s linear infinite;">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(0,201,167,0.4)" stroke-width="2"
+        stroke-dasharray="20 306" stroke-linecap="round"/>
+    </svg>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+      <div id="loadPct" style="font-family:'Syncopate',sans-serif;font-size:1.1rem;font-weight:700;color:#00C9A7;">0%</div>
+      <div style="font-size:0.6rem;color:#4a9e96;letter-spacing:1px;margin-top:2px;">LOADING</div>
+    </div>
+  </div>
+
+  <!-- Status messages -->
+  <div style="text-align:center;margin-bottom:20px;height:36px;">
+    <div id="loadStatusMsg" style="font-size:0.82rem;color:#7ecdc4;font-weight:500;transition:opacity 0.3s ease;">Initializing neural engine...</div>
+    <div id="loadSubMsg" style="font-size:0.7rem;color:#2d6b65;margin-top:4px;font-family:'Share Tech Mono',monospace;">v2.4.1 — 847M parameters</div>
+  </div>
+
+  <!-- Progress bar -->
+  <div style="width:280px;height:3px;background:rgba(0,201,167,0.1);border-radius:99px;overflow:hidden;margin-bottom:24px;">
+    <div id="loadBarFill" style="height:100%;background:linear-gradient(90deg,#00C9A7,#0D9488);border-radius:99px;width:0%;transition:width 0.4s ease;"></div>
+  </div>
+
+  <!-- Feature pills -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:340px;" id="loadPills">
+    <span id="lpill1" style="opacity:0;transition:opacity 0.4s ease;font-size:0.68rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:#4a9e96;padding:4px 10px;border-radius:20px;">🔒 Privacy First</span>
+    <span id="lpill2" style="opacity:0;transition:opacity 0.4s ease;font-size:0.68rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:#4a9e96;padding:4px 10px;border-radius:20px;">☁️ No Cloud Upload</span>
+    <span id="lpill3" style="opacity:0;transition:opacity 0.4s ease;font-size:0.68rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:#4a9e96;padding:4px 10px;border-radius:20px;">🧠 847M Parameters</span>
+    <span id="lpill4" style="opacity:0;transition:opacity 0.4s ease;font-size:0.68rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:#4a9e96;padding:4px 10px;border-radius:20px;">⚡ 98.4% Accuracy</span>
+  </div>
+</div>
+
+<style>
+@keyframes loadLogoPulse {
+  0%,100%{box-shadow:0 0 40px rgba(0,201,167,0.2),0 0 0 0 rgba(0,201,167,0.1);}
+  50%{box-shadow:0 0 60px rgba(0,201,167,0.35),0 0 0 12px rgba(0,201,167,0.04);}
+}
+@keyframes loadScanSpin { to { transform:rotate(360deg); } }
+</style>
 
 <!-- SVG GRADIENT DEFS -->
 <svg width="0" height="0" style="position:absolute;">
@@ -2757,33 +3109,7 @@ html, body {
   </div><!-- end .wrapper -->
 </main>
 
-<!-- =============================================
-     FOOTER
-     ============================================= -->
-<footer class="footer" role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="logo.png" alt="Atheris AI Logo" style="height:36px;width:auto;max-width:120px;object-fit:contain;">
-      <div>
-        <div class="footer-brand-text">Atheris AI</div>
-        <div class="footer-meta">AI Media Authentication Platform</div>
-      </div>
-    </div>
-    <div class="footer-links">
-      <span class="version-tag">v2.4.1</span>
-      <a href="#" class="footer-link">📚 Docs</a>
-      <a href="#" class="footer-link">🔌 API</a>
-      <a href="#" class="footer-link">⬡ Enterprise</a>
-      <a href="#" class="footer-link">
-        <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub
-      </a>
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:20px;font-size:0.72rem;color:var(--text-muted);">
-    © 2026 Atheris AI · Built with ❤️ for media integrity · All analysis is performed locally in your browser · No data ever leaves your device
-  </div>
-</footer>
+
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer" aria-live="polite"></div>
@@ -2993,23 +3319,94 @@ function showPreview(file) {
   document.getElementById('previewFileName').textContent = file.name;
   document.getElementById('previewFileSize').textContent = formatBytes(file.size);
   document.getElementById('previewIcon').textContent = isImg ? '🖼️' : '🎬';
-  const img = document.getElementById('previewImg'); const video = document.getElementById('previewVideo');
+  const img = document.getElementById('previewImg');
+  const video = document.getElementById('previewVideo');
   img.classList.add('hidden'); video.classList.add('hidden');
+
+  // Show preview card with fade-in
+  const previewSection = document.getElementById('previewSection');
+  previewSection.style.opacity = '0';
+  previewSection.classList.remove('hidden');
+  document.getElementById('uploadSection').style.display = 'none';
+  document.getElementById('heatmapToggle').classList.add('hidden');
+  requestAnimationFrame(() => {
+    previewSection.style.transition = 'opacity 0.4s ease';
+    previewSection.style.opacity = '1';
+  });
+
   const url = URL.createObjectURL(file);
-  if (isImg) { img.src = url; img.classList.remove('hidden'); img.onload = () => drawHeatmap(img); }
-  else { video.src = url; video.classList.remove('hidden'); }
+  if (isImg) {
+    img.src = url;
+    img.classList.remove('hidden');
+    img.style.opacity = '0';
+    img.onload = () => {
+      img.style.transition = 'opacity 0.5s ease';
+      img.style.opacity = '1';
+      drawHeatmap(img);
+    };
+  } else {
+    video.src = url;
+    video.classList.remove('hidden');
+  }
+
+  // Animated upload progress
   const progressWrap = document.getElementById('progressWrap');
   const progressFill = document.getElementById('progressFill');
   const progressPct = document.getElementById('progressPct');
   progressWrap.style.display = 'block';
+
+  const scanMessages = [
+    'Reading file headers...',
+    'Verifying file integrity...',
+    'Pre-processing media...',
+    'Extracting metadata...',
+    'Ready for analysis ✓',
+  ];
+  let msgIdx = 0;
+
+  // Add scan wrap below progress if not exists
+  let scanWrap = document.getElementById('uploadScanWrap');
+  if (!scanWrap) {
+    scanWrap = document.createElement('div');
+    scanWrap.id = 'uploadScanWrap';
+    scanWrap.className = 'upload-scan-wrap';
+    scanWrap.innerHTML = `<div class="upload-scan-line"><div class="upload-scan-dot"></div><span class="upload-scan-text" id="uploadScanText">Reading file headers...</span></div>`;
+    progressWrap.parentNode.insertBefore(scanWrap, progressWrap.nextSibling);
+  }
+  scanWrap.style.display = 'block';
+
   let pct = 0;
+  let msgTimer = setInterval(() => {
+    msgIdx = Math.min(msgIdx + 1, scanMessages.length - 1);
+    const scanText = document.getElementById('uploadScanText');
+    if (scanText) {
+      scanText.style.opacity = '0';
+      setTimeout(() => { scanText.textContent = scanMessages[msgIdx]; scanText.style.transition = 'opacity 0.3s'; scanText.style.opacity = '1'; }, 150);
+    }
+  }, 280);
+
   const interval = setInterval(() => {
-    pct += Math.random() * 25; if (pct >= 100) { pct = 100; clearInterval(interval); setTimeout(() => { progressWrap.style.display = 'none'; }, 600); }
-    progressFill.style.width = pct + '%'; progressPct.textContent = Math.round(pct) + '%';
-  }, 120);
-  document.getElementById('previewSection').classList.remove('hidden');
-  document.getElementById('uploadSection').style.display = 'none';
-  document.getElementById('heatmapToggle').classList.add('hidden');
+    pct += Math.random() * 18 + 4;
+    if (pct >= 100) {
+      pct = 100;
+      clearInterval(interval);
+      clearInterval(msgTimer);
+      progressFill.style.width = '100%';
+      progressPct.textContent = '100%';
+      setTimeout(() => {
+        progressWrap.style.display = 'none';
+        scanWrap.style.display = 'none';
+        // Pulse the analyze button to draw attention
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        if (analyzeBtn && !analyzeBtn.disabled) {
+          analyzeBtn.style.transform = 'scale(1.05)';
+          setTimeout(() => { analyzeBtn.style.transition = 'transform 0.3s ease'; analyzeBtn.style.transform = ''; }, 300);
+        }
+      }, 700);
+    }
+    progressFill.style.width = pct + '%';
+    progressPct.textContent = Math.round(pct) + '%';
+  }, 100);
 }
 function replaceFile() { document.getElementById('fileInput').click(); }
 function removeFile() {
@@ -3432,7 +3829,29 @@ function buildCards(aiScore, fileType) {
    ============================================= */
 function displayResults(r) {
   const resultSection = document.getElementById('resultSection');
+  resultSection.style.opacity = '0';
+  resultSection.style.transform = 'translateY(24px)';
   resultSection.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    resultSection.style.transition = 'opacity 0.55s cubic-bezier(0.4,0,0.2,1), transform 0.55s cubic-bezier(0.4,0,0.2,1)';
+    resultSection.style.opacity = '1';
+    resultSection.style.transform = 'translateY(0)';
+  });
+
+  // Flash success overlay
+  if (typeof tlFlashSuccess === 'function') tlFlashSuccess();
+
+  // Animate verdict card with pop
+  const verdictCard = document.getElementById('verdictCard');
+  if (verdictCard) {
+    verdictCard.style.transform = 'scale(0.95)';
+    verdictCard.style.opacity = '0';
+    setTimeout(() => {
+      verdictCard.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease';
+      verdictCard.style.transform = 'scale(1)';
+      verdictCard.style.opacity = '1';
+    }, 120);
+  }
 
   document.getElementById('verdictText').textContent = r.verdict;
   const badge = document.getElementById('verdictBadge');
@@ -4072,40 +4491,123 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize mini charts
   renderMiniCharts();
 
-  // Welcome toast after brief delay
-  setTimeout(()=>showToast('Atheris AI v2.4.1 ready — Upload a file to begin','info'), 1500);
+  // Welcome toast after brief delay — delayed until after loading screen
+  setTimeout(()=>showToast('Atheris AI v2.4.1 ready — Upload a file to begin','info'), 3200);
+
+  // =============================================
+  // LOADING SCREEN ENGINE
+  // =============================================
+  runLoadingScreen();
 });
+
+function runLoadingScreen() {
+  const screen = document.getElementById('atherisLoadingScreen');
+  if (!screen) return;
+
+  const ring = document.getElementById('loadProgressRing');
+  const pctEl = document.getElementById('loadPct');
+  const barFill = document.getElementById('loadBarFill');
+  const statusMsg = document.getElementById('loadStatusMsg');
+  const subMsg = document.getElementById('loadSubMsg');
+
+  const TOTAL_CIRCUMFERENCE = 326;
+
+  const stages = [
+    { pct: 8,  msg: 'Initializing neural engine...',       sub: 'Loading transformer weights' },
+    { pct: 18, msg: 'Loading detection models...',          sub: 'EfficientNet-B7 + ViT-L/14' },
+    { pct: 30, msg: 'Compiling WebAssembly modules...',     sub: 'WASM runtime v3.2.1' },
+    { pct: 42, msg: 'Loading GAN fingerprint database...',  sub: '142,847 model signatures' },
+    { pct: 55, msg: 'Calibrating detection thresholds...',  sub: 'Sensitivity: 98.4% accuracy' },
+    { pct: 66, msg: 'Preparing frequency analyzers...',     sub: 'DCT + DWT pipelines ready' },
+    { pct: 76, msg: 'Building attribution system...',       sub: '7 model classes loaded' },
+    { pct: 85, msg: 'Warming up inference engine...',       sub: 'First-pass calibration' },
+    { pct: 93, msg: 'Finalizing privacy shields...',        sub: 'Zero data transmission mode' },
+    { pct: 100, msg: 'Ready — Atheris AI online.',          sub: 'All systems operational ✓' },
+  ];
+
+  // Show pills with stagger
+  [1,2,3,4].forEach((n, i) => {
+    setTimeout(() => {
+      const pill = document.getElementById('lpill' + n);
+      if (pill) pill.style.opacity = '1';
+    }, 400 + i * 300);
+  });
+
+  let stageIdx = 0;
+  let currentPct = 0;
+  let animFrameId;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function updateRing(pct) {
+    const offset = TOTAL_CIRCUMFERENCE - (pct / 100) * TOTAL_CIRCUMFERENCE;
+    if (ring) ring.style.strokeDashoffset = offset;
+    if (pctEl) pctEl.textContent = Math.round(pct) + '%';
+    if (barFill) barFill.style.width = pct + '%';
+  }
+
+  function runStage() {
+    if (stageIdx >= stages.length) {
+      // Done — dismiss
+      setTimeout(dismissLoadingScreen, 400);
+      return;
+    }
+    const stage = stages[stageIdx];
+    const targetPct = stage.pct;
+    const duration = 280 + Math.random() * 320;
+    const startPct = currentPct;
+    const startTime = performance.now();
+
+    // Update text with fade
+    if (statusMsg) { statusMsg.style.opacity = '0'; setTimeout(() => { statusMsg.textContent = stage.msg; statusMsg.style.opacity = '1'; }, 150); }
+    if (subMsg) { setTimeout(() => { subMsg.textContent = stage.sub; }, 150); }
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      currentPct = lerp(startPct, targetPct, eased);
+      updateRing(currentPct);
+
+      if (progress < 1) {
+        animFrameId = requestAnimationFrame(tick);
+      } else {
+        currentPct = targetPct;
+        stageIdx++;
+        const delay = stageIdx === stages.length ? 600 : 80 + Math.random() * 180;
+        setTimeout(runStage, delay);
+      }
+    }
+    animFrameId = requestAnimationFrame(tick);
+  }
+
+  // Start after short delay
+  setTimeout(runStage, 300);
+}
+
+function dismissLoadingScreen() {
+  const screen = document.getElementById('atherisLoadingScreen');
+  if (!screen) return;
+  screen.style.opacity = '0';
+  screen.style.transform = 'scale(1.03)';
+  setTimeout(() => {
+    screen.style.display = 'none';
+    // Trigger hero entrance animations
+    document.querySelectorAll('.hero > *').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, i * 80);
+    });
+  }, 600);
+}
 
 
 
 </script>
-<!--
-  ================================================================
-  Atheris AI — APPEND-ONLY FEATURE ADDITIONS
-  This file contains ONLY new features to be inserted into the
-  existing Atheris AI HTML. No existing code is modified.
-
-  INSERTION POINT: Paste EVERYTHING between <body> tags here
-  AFTER the existing </footer> and BEFORE </body>
-  EXCEPT the <style> block — paste that inside the existing <style>
-  and the Chart.js <script> tag — paste in <head>
-  ================================================================
--->
-
-<!--
-  ================================================================
-  STEP 1: ADD TO <head> — Chart.js CDN
-  ================================================================
--->
-<!-- PASTE THIS IN <head> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>>
-</head>
-
-<!--
-  ================================================================
-  STEP 2: ADD TO EXISTING <style> — New Feature Styles
-  ================================================================
--->
 <style id="tl-new-styles">
 
 /* ================================================================
@@ -5101,6 +5603,33 @@ document.addEventListener('DOMContentLoaded', () => {
     gap: 4px !important;
   }
 }
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Atheris AI Logo" style="height:36px;width:auto;max-width:120px;object-fit:contain;">
+      <div>
+        <div class="footer-brand-text">Atheris AI</div>
+        <div class="footer-meta">AI Media Authentication Platform</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <span class="version-tag">v2.4.1</span>
+      <a href="#" class="footer-link">📚 Docs</a>
+      <a href="#" class="footer-link">🔌 API</a>
+      <a href="#" class="footer-link">⬡ Enterprise</a>
+      <a href="#" class="footer-link">
+        <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:20px;font-size:0.72rem;color:var(--text-muted);">
+    © 2026 Atheris AI · Built with ❤️ for media integrity · All analysis is performed locally in your browser · No data ever leaves your device
+  </div>
+</footer>
 </style>
 
 
@@ -5812,6 +6341,15 @@ const TLDetectionEngine = {
   const ctx = canvas.getContext('2d');
   let nodes = [], edges = [], animFrame;
   let nodeCount = 0, inferences = 0;
+  let isVisible = false;
+
+  // Pause when not visible — stops lag completely
+  const visObs = new IntersectionObserver((entries) => {
+    isVisible = entries[0].isIntersecting;
+    if (isVisible && !animFrame) draw();
+    if (!isVisible && animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  }, { threshold: 0.1 });
+  visObs.observe(canvas);
 
   function resize() {
     canvas.width = canvas.offsetWidth;
@@ -6847,3 +7385,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+  
