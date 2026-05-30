@@ -6582,9 +6582,9 @@ const SFX = {
         overflow: hidden;
         margin-bottom: 24px;
         position: relative;
-        background: linear-gradient(135deg, #0a0e17, #111827);
-        border: 1px solid rgba(79,140,255,0.15);
-        box-shadow: var(--shadow-xl);
+        background: linear-gradient(135deg, #071a12, #0d2b1a);
+        border: 1px solid rgba(0,201,167,0.3);
+        box-shadow: 0 20px 50px rgba(0,201,167,0.15), 0 4px 12px rgba(0,0,0,0.4);
       }
       .tl-neural-canvas {
         display: block;
@@ -6607,7 +6607,7 @@ const SFX = {
         font-weight: 700;
         color: white;
         text-align: center;
-        text-shadow: 0 0 30px rgba(79,140,255,0.5);
+        text-shadow: 0 0 30px rgba(0,201,167,0.7);
         margin-bottom: 8px;
       }
       .tl-neural-subtitle {
@@ -6626,7 +6626,7 @@ const SFX = {
       .tl-neural-stat {
         text-align: center;
       }
-      .tl-neural-stat-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: rgba(79,140,255,0.9); }
+      .tl-neural-stat-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: rgba(0,201,167,0.95); }
       .tl-neural-stat-label { font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
 
       /* =============================================
@@ -8541,13 +8541,13 @@ const SFX = {
       // FEATURE 3: MODEL ATTRIBUTION
       // =============================================
       const TL_MODELS_DATA = [
-        { name: 'GPT-4 / GPT-4o', icon: '🤖', color: '#10A37F' },
-        { name: 'Claude 3.x', icon: '🟠', color: '#D97706' },
-        { name: 'Gemini Pro', icon: '♊', color: '#4285F4' },
-        { name: 'DeepSeek', icon: '🔵', color: '#3B82F6' },
-        { name: 'Llama 3', icon: '🦙', color: '#7C3AED' },
-        { name: 'Mistral', icon: '🌬️', color: '#EF4444' },
-        { name: 'Human Written', icon: '✍️', color: '#10B981' },
+        { name: 'GPT-4 / GPT-4o', icon: '<img src="chatgpt.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="ChatGPT">', color: '#10A37F' },
+        { name: 'Claude 3.x', icon: '<img src="claude.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Claude">', color: '#D97706' },
+        { name: 'Gemini Pro', icon: '<img src="gemini.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Gemini">', color: '#4285F4' },
+        { name: 'DeepSeek', icon: '<img src="deepseek.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="DeepSeek">', color: '#3B82F6' },
+        { name: 'Llama 3', icon: '<img src="llama.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Llama">', color: '#7C3AED' },
+        { name: 'Mistral', icon: '<img src="mistral.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Mistral">', color: '#EF4444' },
+        { name: 'Human Written', icon: '<img src="human.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Human">', color: '#10B981' },
       ];
 
       async function tlRunModelAttribution() {
